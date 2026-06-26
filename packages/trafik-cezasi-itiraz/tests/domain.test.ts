@@ -74,7 +74,7 @@ describe("trafik cezasi itiraz domain", () => {
   test("domain kontrol listesi sure ve delil uyarilari ekler", () => {
     const checklist = buildTrafficFineChecklist(baseFacts);
 
-    expect(checklist.some((item) => item.label.includes("tahmini son gun: 2026-06-25"))).toBe(true);
+    expect(checklist.some((item) => item.label.includes("tahmini son gün: 2026-06-25"))).toBe(true);
     expect(checklist.some((item) => item.label.includes("Radar/EDS fotografi"))).toBe(true);
     expect(checklist.every((item) => ["required", "recommended", "verify"].includes(item.status))).toBe(true);
   });

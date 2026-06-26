@@ -263,30 +263,30 @@ export function buildTrafficFinePetition(
     court: facts.court ?? buildCourtName(facts.courtCity),
     applicant: facts.applicant,
     respondent: facts.ticket.issuingAuthority,
-    subject: "Trafik idari para cezasina itiraz ve cezanin iptali talebidir.",
+    subject: "Trafik idari para cezasına itiraz ve cezanın iptali talebidir.",
     explanations: [
-      `Tarafima yoneltilen trafik idari para cezasi ozetle su sekildedir: ${renderFineSummary(facts.ticket)}.`,
+      `Tarafıma yöneltilen trafik idari para cezası özetle şu şekildedir: ${renderFineSummary(facts.ticket)}.`,
       facts.ticket.notificationDate
-        ? `Ceza bildirimi ${facts.ticket.notificationDate} tarihinde teblig edilmis gorunmektedir; basvuru suresi ve teblig usulu UYAP yuklemesi oncesinde ayrica kontrol edilecektir.`
-        : "Teblig tarihi dosyada netlesmedigi icin basvuru suresi ayrica kontrol edilmelidir.",
-      `Olaya iliskin beyanim: ${narrative.trim()}`,
+        ? `Ceza bildirimi ${facts.ticket.notificationDate} tarihinde tebliğ edilmiş görünmektedir; başvuru süresi ve tebliğ usulü UYAP yüklemesi öncesinde ayrıca kontrol edilecektir.`
+        : "Tebliğ tarihi dosyada netleşmediği için başvuru süresi ayrıca kontrol edilmelidir.",
+      `Olaya ilişkin beyanım: ${narrative.trim()}`,
       ...profile.explanations,
       ...(facts.objections ?? []).map((objection) => `Ayrica itiraz sebebim: ${objection}`),
     ],
     legalGrounds: [
-      "2918 sayili Karayollari Trafik Kanunu.",
-      "5326 sayili Kabahatler Kanunu.",
-      "Ilgili yonetmelik ve sair mevzuat.",
+      "2918 sayılı Karayolları Trafik Kanunu.",
+      "5326 sayılı Kabahatler Kanunu.",
+      "İlgili yönetmelik ve sair mevzuat.",
     ],
-    evidence: unique(["Ceza tutanagi/bildirim PDF'i", "Teblig kaydi", ...profile.evidence, ...(facts.evidence ?? [])]),
+    evidence: unique(["Ceza tutanağı/bildirim PDF'i", "Tebliğ kaydı", ...profile.evidence, ...(facts.evidence ?? [])]),
     requests: [
-      "Itirazimin kabulune karar verilmesini talep ederim.",
-      "Hukuka aykiri veya maddi hataya dayali trafik idari para cezasinin iptaline karar verilmesini talep ederim.",
+      "İtirazımın kabulüne karar verilmesini talep ederim.",
+      "Hukuka aykırı veya maddi hataya dayalı trafik idari para cezasının iptaline karar verilmesini talep ederim.",
       facts.paid
-        ? "Ceza bedeli odenmis ise, iptal karari sonrasinda bedelin iadesine iliskin haklarimin sakli tutulmasini talep ederim."
-        : "Yargilama giderleri ve sair haklarimin sakli tutulmasini talep ederim.",
+        ? "Ceza bedeli ödenmiş ise, iptal kararı sonrasında bedelin iadesine ilişkin haklarımın saklı tutulmasını talep ederim."
+        : "Yargılama giderleri ve sair haklarımın saklı tutulmasını talep ederim.",
     ],
-    attachments: unique(["Ceza tutanagi/bildirim PDF'i", ...(facts.attachments ?? [])]),
+    attachments: unique(["Ceza tutanağı/bildirim PDF'i", ...(facts.attachments ?? [])]),
     date: facts.date,
   };
 }
@@ -302,14 +302,14 @@ export function buildTrafficFineChecklist(
   const items: ChecklistItem[] = [
     ...buildPetitionChecklist(petition),
     { label: `Itiraz turu kontrol edildi: ${profile.label}.`, status: "verify" },
-    { label: "Ceza tutanagi PDF'i ve varsa ek deliller dilekce eklerine eklendi.", status: "required" },
-    { label: "UYAP Vatandas'a yuklemeden once UDF, UYAP Editor veya Vatandas ekraninda acilip kontrol edildi.", status: "required" },
+    { label: "Ceza tutanağı PDF'i ve varsa ek deliller dilekçe eklerine eklendi.", status: "required" },
+    { label: "UYAP Vatandaş'a yüklemeden önce UDF, UYAP Editor veya Vatandaş ekranında açılıp kontrol edildi.", status: "required" },
     ...profile.checklist,
   ];
 
   if (facts.ticket.notificationDate && deadline.deadlineDate) {
     items.push({
-      label: `Teblig tarihi ${facts.ticket.notificationDate}; tahmini son gun: ${deadline.deadlineDate}.`,
+      label: `Tebliğ tarihi ${facts.ticket.notificationDate}; tahmini son gün: ${deadline.deadlineDate}.`,
       status: deadline.status === "expired" ? "required" : "verify",
     });
   }
@@ -408,7 +408,7 @@ function renderFineSummary(ticket: TrafficFineTicket): string {
     ticket.article ? `madde ${ticket.article}` : "",
     typeof ticket.amountTRY === "number" ? `tutar ${ticket.amountTRY} TL` : "",
     ticket.location ? `yer ${ticket.location}` : "",
-    ticket.description ? `aciklama ${stripTrailingPeriod(ticket.description)}` : "",
+    ticket.description ? `açıklama ${stripTrailingPeriod(ticket.description)}` : "",
   ]
     .filter(Boolean)
     .join(", ");
