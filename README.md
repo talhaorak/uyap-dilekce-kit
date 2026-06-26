@@ -27,17 +27,25 @@ islerinde de kullanilabilir.
   cikarma, delil kontrol listesi ve sablonlar.
 - `skills/uyap-udf`: agent'lar icin UDF format skill'i.
 - `skills/trafik-cezasi-itiraz`: agent'lar icin trafik cezasi itiraz skill'i.
-- `apps/cli` ve `apps/web`: kutuphaneler olgunlastiktan sonra kullanici
-  arayuzleri.
+- `apps/cli`: ilk kullanilabilir komut satiri uygulamasi.
+- `apps/web`: CLI workflow dogrulandiktan sonra gelecek kullanici arayuzu.
 
 ## Mevcut Durum
 
 Bu repo erken asamadadir. Su anda:
 
 - Bun workspace iskeleti vardir.
-- `packages/uyap-udf` icinde basit metinden UDF arsivi ureten ilk POC vardir.
-- UDF uretimi icin testler vardir.
+- `packages/uyap-udf` icinde basit metinden UDF arsivi ureten, inspect eden ve
+  validate eden ilk POC vardir.
+- `packages/dilekce-core` Markdown/metin rendering ve kontrol listesi uretir.
+- `packages/trafik-cezasi-itiraz` manuel facts JSON + olay anlatimindan trafik
+  cezasi itiraz dilekcesi ve checklist uretir.
+- `apps/cli` sahte ornek veriyle `petition.md`, `checklist.md` ve opsiyonel
+  `petition.udf` uretir.
+- UDF, dilekce core, trafik domain ve CLI icin testler vardir.
 - Agent yonlendirme dosyalari ve ayrintili is plani vardir.
+- Skill dagitimi ve forward-test senaryolari dokumante edilmistir.
+- `yargi-mcp` icin opsiyonel adapter notlari vardir; core dependency degildir.
 
 ## Kurulum
 
@@ -58,6 +66,18 @@ bun run typecheck
 ```
 
 ## Ilk CLI Denemesi
+
+Trafik cezasi itiraz MVP:
+
+```bash
+bun run trafik-cezasi-itiraz \
+  --facts examples/trafik-cezasi-facts.json \
+  --narrative examples/trafik-cezasi-olay.md \
+  --out /tmp/trafik-demo \
+  --udf
+```
+
+UDF katmani:
 
 ```bash
 printf "Merhaba\nDunya" > /tmp/dilekce.txt
@@ -80,3 +100,5 @@ gecen dilekce taslaklari hazirlamaktir.
 - UYAP Editor ve UDF formati hakkinda resmi UYAP dokumantasyonu.
 - `saidsurucu/UDF-Toolkit`: UDF donusumleri icin mevcut acik kaynak calisma.
 - `saidsurucu/yargi-mcp`: Turk hukuk kaynaklari icin opsiyonel MCP entegrasyonu.
+- `docs/SKILL-DISTRIBUTION.md`: skill dagitimi, validation ve forward-test.
+- `docs/yargi-mcp-adapter.md`: opsiyonel yargi-mcp adapter sozlesmesi.

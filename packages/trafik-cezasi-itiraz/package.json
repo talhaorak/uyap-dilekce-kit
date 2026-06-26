@@ -1,0 +1,12 @@
+{
+  "name": "@uyap-dilekce-kit/trafik-cezasi-itiraz",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Trafik cezasi itiraz dilekcesi domain modeli ve sablonlari.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@uyap-dilekce-kit/dilekce-core": "workspace:*"
+  }
+}

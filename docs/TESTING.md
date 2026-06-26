@@ -16,6 +16,18 @@
 - Dilekce Markdown olarak render edilir.
 - Basit kontrol listesi uretilir.
 
+`packages/trafik-cezasi-itiraz/tests/domain.test.ts` su davranislari dogrular:
+
+- Manuel facts JSON icin temel validasyon yapilir.
+- Itiraz turu radar/EDS, park ve plaka/kimlik hatasi orneklerinde siniflanir.
+- Trafik cezasi facts girdisinden dilekce-core `Petition` modeli uretilir.
+- Sure, delil ve domain uyarilari checklist'e eklenir.
+
+`apps/cli/tests/cli.test.ts` su davranislari dogrular:
+
+- Sahte facts JSON + olay anlatimi ile `petition.md`, `checklist.md` ve
+  `petition.udf` yazilir.
+
 ## Calistirma
 
 ```bash
@@ -30,4 +42,12 @@ bun run typecheck
 - Farkli font/size ayarlari.
 - Validate komutu icin bozuk arsiv, eksik `content.xml`, hatali offset.
 - Dilekce core snapshot testleri.
-- Trafik cezasi domain testleri.
+- CLI hata durumlari: eksik arguman, bozuk JSON, eksik facts alanlari.
+- UYAP Editor/Vatandas manuel kabul testi protokolu.
+
+## Agent/Skill Forward-Testleri
+
+Skill davranislari icin gercekci agent prompt'lari ve beklenen davranislar
+`docs/SKILL-DISTRIBUTION.md` icinde tutulur. Skill veya agent dokumani
+degistiginde en az bir forward-test senaryosu manuel olarak degerlendirilmeli
+veya mumkunse taze bir subagent/thread ile denenmelidir.

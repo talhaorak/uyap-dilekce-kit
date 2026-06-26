@@ -18,8 +18,9 @@ olarak tasarlanir.
 
 3. **Domain katmani**
    - Paket: `packages/trafik-cezasi-itiraz`
-   - Sorumluluk: trafik cezasi PDF'inden bilgi cikarma, itiraz turu siniflama,
-     eksik bilgi sorulari, delil checklist'i, trafik cezasi sablonlari.
+   - Sorumluluk: manuel facts JSON veya ileride PDF/OCR adapter'inden gelen
+     bilgilerle itiraz turu siniflama, eksik bilgi sorulari, delil checklist'i,
+     trafik cezasi sablonlari.
 
 4. **Agent skill katmani**
    - Klasorler: `skills/uyap-udf`, `skills/trafik-cezasi-itiraz`
@@ -34,14 +35,15 @@ olarak tasarlanir.
 ## Veri Akisi
 
 ```text
-ceza-tutanagi.pdf + kullanici-bilgileri.json + olay.md
-  -> facts.json
-  -> objection-type.json
+manuel facts.json + olay.md
+  -> objection-type
   -> petition.md
-  -> petition.docx
-  -> petition.udf
   -> checklist.md
+  -> petition.udf
 ```
+
+PDF/OCR extraction ve DOCX cikti bilerek sonraki faza birakildi; mevcut MVP
+manuel facts girdisiyle deterministic ve test edilebilir kalir.
 
 ## yargi-mcp Konumu
 
@@ -52,6 +54,9 @@ kullanilir:
 - bulunan kararlar kaynak metniyle birlikte cache'lenir,
 - karar metni dilekcedeki iddiayi acikca desteklemiyorsa citation olarak
   kullanilmaz.
+
+Adapter sozlesmesi, local/remote MCP ayrimi ve kaynak cache guardrail'leri icin
+`docs/yargi-mcp-adapter.md` dosyasina bak.
 
 ## Guvenlik ve Hukuk Sinirlari
 

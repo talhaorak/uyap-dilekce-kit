@@ -16,19 +16,19 @@ ayirmak icin yazildi.
 
 ## Faz 1 - UDF Format Katmani
 
-- [ ] `content.xml` uretimini daha resmi bir model ile temsil et:
+- [x] `content.xml` uretimini daha resmi bir model ile temsil et:
   - `Template`
   - `ContentPool`
   - `Paragraph`
   - `Style`
   - `PageFormat`
-- [ ] XML uretiminde attribute escaping ve CDATA edge case testlerini artir.
+- [x] XML uretiminde attribute escaping ve CDATA edge case testlerini artir.
 - [x] UDF validate komutu ekle:
   - arsiv aciliyor mu,
   - kokte `content.xml` var mi,
   - `format_id="1.8"` var mi,
   - offset/length metin havuzuyla uyumlu mu.
-- [ ] `inspect` komutunu daha guvenli hale getir:
+- [x] `inspect` komutunu daha guvenli hale getir:
   - varsayilan olarak tum `content.xml` basma,
   - `--show-xml` bayragi ekle.
 - [ ] Basit UYAP Editor manuel test protokolu yaz.
@@ -37,7 +37,7 @@ ayirmak icin yazildi.
 ## Faz 2 - Dilekce Core
 
 - [x] `packages/dilekce-core` paketini ac.
-- [ ] Dilekce veri modelini tanimla:
+- [x] Dilekce veri modelini tanimla:
   - baslik/merci,
   - taraf/kisi bilgileri,
   - konu,
@@ -46,7 +46,7 @@ ayirmak icin yazildi.
   - deliller,
   - sonuc ve istem,
   - ekler.
-- [ ] Markdown renderer yaz.
+- [x] Markdown renderer yaz.
 - [ ] DOCX renderer icin kutuphane sec:
   - once basit metin/bolumler,
   - sonra tablo/ek listesi.
@@ -55,8 +55,8 @@ ayirmak icin yazildi.
 
 ## Faz 3 - Trafik Cezasi Itiraz Domain Paketi
 
-- [ ] `packages/trafik-cezasi-itiraz` paketini ac.
-- [ ] `facts.json` semasini tanimla:
+- [x] `packages/trafik-cezasi-itiraz` paketini ac.
+- [x] `facts.json` semasini tanimla:
   - tutanak no,
   - teblig tarihi,
   - ceza tarihi,
@@ -68,7 +68,7 @@ ayirmak icin yazildi.
   - olay anlatimi,
   - ek deliller.
 - [ ] PDF/OCR extraction adapter tasarla.
-- [ ] Itiraz turu siniflayici yaz:
+- [x] Itiraz turu siniflayici yaz:
   - radar/EDS,
   - park,
   - kirmizi isik,
@@ -78,9 +78,9 @@ ayirmak icin yazildi.
   - plaka/kimlik hatasi,
   - teblig/usul,
   - diger.
-- [ ] Her tur icin eksik bilgi sorulari ve delil checklist'i yaz.
-- [ ] Ilk dilekce sablonunu trafik cezasi genel itiraz icin hazirla.
-- [ ] Domain testleri ekle:
+- [x] Her tur icin eksik bilgi sorulari ve delil checklist'i yaz.
+- [x] Ilk dilekce sablonunu trafik cezasi genel itiraz icin hazirla.
+- [x] Domain testleri ekle:
   - sure uyarisi,
   - eksik bilgi sorulari,
   - delil listesi,
@@ -91,31 +91,31 @@ ayirmak icin yazildi.
 - [ ] `skills/uyap-udf` skill'ini kucuk ve tetikleyici odakli tut.
 - [ ] `skills/trafik-cezasi-itiraz` skill'ini workflow odakli tut.
 - [ ] Ayrintili format/hukuk bilgilerini `references/` altina tasi.
-- [ ] Skill dagitimi icin en az iki yol dokumante et:
+- [x] Skill dagitimi icin en az iki yol dokumante et:
   - repo icinden path ile kullanim,
   - ileride plugin/skill paketi olarak dagitim.
-- [ ] Skill validation checklist'i ekle.
-- [ ] Agent forward-test senaryolari yaz.
+- [x] Skill validation checklist'i ekle.
+- [x] Agent forward-test senaryolari yaz.
 
 ## Faz 5 - yargi-mcp Opsiyonel Adapter
 
-- [ ] `docs/yargi-mcp-adapter.md` tasarimini yaz.
-- [ ] Local `uvx yargi-mcp` ve remote MCP opsiyonlarini ayir.
-- [ ] Arama sorgularini daraltan preset'ler yaz.
-- [ ] Kaynak cache semasi tasarla.
-- [ ] Kaynak desteklemiyorsa dilekceye citation eklemeyen guardrail yaz.
+- [x] `docs/yargi-mcp-adapter.md` tasarimini yaz.
+- [x] Local `uvx yargi-mcp` ve remote MCP opsiyonlarini ayir.
+- [x] Arama sorgularini daraltan preset'ler yaz.
+- [x] Kaynak cache semasi tasarla.
+- [x] Kaynak desteklemiyorsa dilekceye citation eklemeyen guardrail yaz.
 
 ## Faz 6 - CLI MVP
 
-- [ ] `apps/cli` ac.
-- [ ] Ornek akisi calistir:
+- [x] `apps/cli` ac.
+- [x] Ornek akisi calistir:
   - PDF veya manuel facts,
   - olay anlatimi,
   - dilekce markdown,
   - UDF export,
   - checklist.
-- [ ] `examples/` altina sahte veriyle tam demo koy.
-- [ ] CI'da testleri calistir.
+- [x] `examples/` altina sahte veriyle tam demo koy.
+- [x] CI'da testleri calistir.
 
 ## Faz 7 - Web Uygulamasi
 

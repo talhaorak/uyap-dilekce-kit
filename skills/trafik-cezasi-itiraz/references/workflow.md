@@ -38,3 +38,5 @@
 - Karar metnini getir ve dilekcedeki iddiayi gercekten destekledigini kontrol
   et.
 - Kaynak ID/URL ve karar ozetini checklist'e ekle.
+- Local/remote MCP ayrimi, cache semasi ve citation guardrail'leri icin
+  `../../../docs/yargi-mcp-adapter.md` dosyasini oku.

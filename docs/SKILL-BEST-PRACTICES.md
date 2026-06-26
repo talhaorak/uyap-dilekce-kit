@@ -51,6 +51,9 @@ okunarak projeye uygulanacak kurallari toplar.
    - Skill kullansalar da kullanmasalar da gelistiriciler CLI/kutuphaneyi
      dogrudan kullanabilir.
 
+Detayli dagitim secenekleri, validation checklist'i ve forward-test prompt'lari
+icin `docs/SKILL-DISTRIBUTION.md` dosyasina bak.
+
 ## Skill Kalite Checklist'i
 
 - [ ] `SKILL.md` frontmatter gecerli YAML.

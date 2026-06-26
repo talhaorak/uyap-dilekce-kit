@@ -4,11 +4,13 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "test": "bun test",
     "typecheck": "tsc --noEmit",
+    "trafik-cezasi-itiraz": "bun run apps/cli/src/index.ts trafik-cezasi-itiraz",
     "uyap-udf": "bun run packages/uyap-udf/src/cli.ts"
   },
   "devDependencies": {

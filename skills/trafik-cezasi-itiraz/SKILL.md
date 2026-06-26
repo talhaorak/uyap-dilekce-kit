@@ -28,6 +28,8 @@ explicit.
 
 - Read `references/workflow.md` for fields, objection classes, and output
   checklist.
+- Read `../../docs/yargi-mcp-adapter.md` before using optional yargi-mcp
+  research or case-law citation support.
 
 ## Gotchas
 

@@ -5,6 +5,48 @@ export interface TextUdfOptions {
   fontSize?: number;
 }
 
+export interface PageFormat {
+  mediaSizeName: string;
+  leftMargin: number;
+  rightMargin: number;
+  topMargin: number;
+  bottomMargin: number;
+  paperOrientation: "0" | "1";
+  headerFOffset: number;
+  footerFOffset: number;
+}
+
+export interface TextRun {
+  startOffset: number;
+  length: number;
+  family: string;
+  size: number;
+}
+
+export interface Paragraph {
+  family: string;
+  size: number;
+  description: string;
+  content?: TextRun;
+}
+
+export interface UdfStyle {
+  name: string;
+  description: string;
+  family: string;
+  size: number;
+  bold?: boolean;
+  italic?: boolean;
+}
+
+export interface UdfDocument {
+  formatId: string;
+  content: string;
+  pageFormat: PageFormat;
+  paragraphs: Paragraph[];
+  styles: UdfStyle[];
+}
+
 export interface UdfInspection {
   entries: string[];
   hasContentXml: boolean;
@@ -19,15 +61,72 @@ export interface UdfValidation {
   inspection: UdfInspection;
 }
 
+export interface InspectionOutputOptions {
+  showXml?: boolean;
+}
+
 const DEFAULT_FONT_FAMILY = "Times New Roman";
 const DEFAULT_FONT_SIZE = 12;
 
-export function buildContentXml(text: string, options: TextUdfOptions = {}): string {
+const DEFAULT_PAGE_FORMAT: PageFormat = {
+  mediaSizeName: "1",
+  leftMargin: 42.52,
+  rightMargin: 28.35,
+  topMargin: 14.17,
+  bottomMargin: 14.17,
+  paperOrientation: "1",
+  headerFOffset: 20,
+  footerFOffset: 20,
+};
+
+export function buildTextUdfDocument(text: string, options: TextUdfOptions = {}): UdfDocument {
   const fontFamily = options.fontFamily ?? DEFAULT_FONT_FAMILY;
   const fontSize = options.fontSize ?? DEFAULT_FONT_SIZE;
-  const paragraphs = buildParagraphElements(text, fontFamily, fontSize);
 
-  return `<?xml version="1.0" encoding="UTF-8"?><template format_id="1.8"><content><![CDATA[${toSafeCdata(text)}]]></content><properties><pageFormat mediaSizeName="1" leftMargin="42.52" rightMargin="28.35" topMargin="14.17" bottomMargin="14.17" paperOrientation="1" headerFOffset="20.0" footerFOffset="20.0"/></properties><elements resolver="hvl-default">${paragraphs}</elements><styles><style name="default" description="Gecerli" family="${escapeXmlAttribute(fontFamily)}" size="${fontSize}" bold="false" italic="false"/><style name="hvl-default" description="Gövde" family="${escapeXmlAttribute(fontFamily)}" size="${fontSize}"/></styles></template>`;
+  return {
+    formatId: "1.8",
+    content: text,
+    pageFormat: DEFAULT_PAGE_FORMAT,
+    paragraphs: buildParagraphs(text, fontFamily, fontSize),
+    styles: [
+      {
+        name: "default",
+        description: "Gecerli",
+        family: fontFamily,
+        size: fontSize,
+        bold: false,
+        italic: false,
+      },
+      {
+        name: "hvl-default",
+        description: "Gövde",
+        family: fontFamily,
+        size: fontSize,
+      },
+    ],
+  };
+}
+
+export function buildContentXml(text: string, options: TextUdfOptions = {}): string {
+  return serializeContentXml(buildTextUdfDocument(text, options));
+}
+
+export function serializeContentXml(document: UdfDocument): string {
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    `<template format_id="${escapeXmlAttribute(document.formatId)}">`,
+    `<content><![CDATA[${toSafeCdata(document.content)}]]></content>`,
+    "<properties>",
+    serializePageFormat(document.pageFormat),
+    "</properties>",
+    '<elements resolver="hvl-default">',
+    document.paragraphs.map(serializeParagraph).join(""),
+    "</elements>",
+    "<styles>",
+    document.styles.map(serializeStyle).join(""),
+    "</styles>",
+    "</template>",
+  ].join("");
 }
 
 export function createTextUdfBuffer(text: string, options: TextUdfOptions = {}): Uint8Array {
@@ -53,6 +152,20 @@ export function inspectUdf(buffer: Uint8Array): UdfInspection {
     formatId,
     contentXml,
   };
+}
+
+export function formatInspection(inspection: UdfInspection, options: InspectionOutputOptions = {}): Omit<UdfInspection, "contentXml"> & { contentXml?: string } {
+  const output: Omit<UdfInspection, "contentXml"> & { contentXml?: string } = {
+    entries: inspection.entries,
+    hasContentXml: inspection.hasContentXml,
+    formatId: inspection.formatId,
+  };
+
+  if (options.showXml) {
+    output.contentXml = inspection.contentXml;
+  }
+
+  return output;
 }
 
 export function validateUdf(buffer: Uint8Array): UdfValidation {
@@ -88,12 +201,7 @@ export function validateUdf(buffer: Uint8Array): UdfValidation {
   }
 
   if (inspection.contentXml) {
-    const contentPool = extractContentPool(inspection.contentXml);
-    if (contentPool === null) {
-      errors.push("Ana <content><![CDATA[...]]></content> metin havuzu bulunamadi.");
-    } else {
-      validateOffsets(inspection.contentXml, contentPool, errors);
-    }
+    validateContentXml(inspection.contentXml, errors, warnings);
   }
 
   return {
@@ -104,22 +212,51 @@ export function validateUdf(buffer: Uint8Array): UdfValidation {
   };
 }
 
-function buildParagraphElements(text: string, fontFamily: string, fontSize: number): string {
+function buildParagraphs(text: string, fontFamily: string, fontSize: number): Paragraph[] {
   const lines = text.split("\n");
   let offset = 0;
 
-  return lines
-    .map((line) => {
-      const length = countCharacters(line);
-      const content =
-        length > 0
-          ? `<content startOffset="${offset}" length="${length}" family="${escapeXmlAttribute(fontFamily)}" size="${fontSize}"/>`
-          : "";
-      const paragraph = `<paragraph family="${escapeXmlAttribute(fontFamily)}" size="${fontSize}" description="Gövde">${content}</paragraph>`;
-      offset += length + 1;
-      return paragraph;
-    })
-    .join("");
+  return lines.map((line) => {
+    const length = countCharacters(line);
+    const paragraph: Paragraph = {
+      family: fontFamily,
+      size: fontSize,
+      description: "Gövde",
+    };
+
+    if (length > 0) {
+      paragraph.content = {
+        startOffset: offset,
+        length,
+        family: fontFamily,
+        size: fontSize,
+      };
+    }
+
+    offset += length + 1;
+    return paragraph;
+  });
+}
+
+function serializePageFormat(pageFormat: PageFormat): string {
+  return `<pageFormat mediaSizeName="${escapeXmlAttribute(pageFormat.mediaSizeName)}" leftMargin="${pageFormat.leftMargin}" rightMargin="${pageFormat.rightMargin}" topMargin="${pageFormat.topMargin}" bottomMargin="${pageFormat.bottomMargin}" paperOrientation="${pageFormat.paperOrientation}" headerFOffset="${pageFormat.headerFOffset}.0" footerFOffset="${pageFormat.footerFOffset}.0"/>`;
+}
+
+function serializeParagraph(paragraph: Paragraph): string {
+  const content = paragraph.content ? serializeTextRun(paragraph.content) : "";
+  return `<paragraph family="${escapeXmlAttribute(paragraph.family)}" size="${paragraph.size}" description="${escapeXmlAttribute(paragraph.description)}">${content}</paragraph>`;
+}
+
+function serializeTextRun(textRun: TextRun): string {
+  return `<content startOffset="${textRun.startOffset}" length="${textRun.length}" family="${escapeXmlAttribute(textRun.family)}" size="${textRun.size}"/>`;
+}
+
+function serializeStyle(style: UdfStyle): string {
+  return `<style name="${escapeXmlAttribute(style.name)}" description="${escapeXmlAttribute(style.description)}" family="${escapeXmlAttribute(style.family)}" size="${style.size}"${optionalBooleanAttribute("bold", style.bold)}${optionalBooleanAttribute("italic", style.italic)}/>`;
+}
+
+function optionalBooleanAttribute(name: string, value: boolean | undefined): string {
+  return typeof value === "boolean" ? ` ${name}="${value ? "true" : "false"}"` : "";
 }
 
 export function countCharacters(value: string): number {
@@ -130,17 +267,29 @@ function toSafeCdata(value: string): string {
   return value.replaceAll("]]>", "]]]]><![CDATA[>");
 }
 
+function validateContentXml(contentXml: string, errors: string[], warnings: string[]): void {
+  const contentPool = extractContentPool(contentXml);
+  if (contentPool === null) {
+    errors.push("Ana <content><![CDATA[...]]></content> metin havuzu bulunamadi.");
+    return;
+  }
+
+  validateOffsets(contentXml, contentPool, errors, warnings);
+}
+
 function extractContentPool(contentXml: string): string | null {
-  const match = contentXml.match(/<template\b[\s\S]*?<content><!\[CDATA\[([\s\S]*?)\]\]><\/content><properties>/);
+  const match = contentXml.match(/<template\b[\s\S]*?<content>\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*<\/content>/);
   return match ? match[1].replaceAll("]]]]><![CDATA[>", "]]>") : null;
 }
 
-function validateOffsets(contentXml: string, contentPool: string, errors: string[]): void {
+function validateOffsets(contentXml: string, contentPool: string, errors: string[], warnings: string[]): void {
   const poolLength = countCharacters(contentPool);
   const contentElementPattern = /<content\b(?=[^>]*\bstartOffset="(\d+)")(?=[^>]*\blength="(\d+)")[^>]*\/>/g;
   let match: RegExpExecArray | null;
+  let referenceCount = 0;
 
   while ((match = contentElementPattern.exec(contentXml)) !== null) {
+    referenceCount += 1;
     const startOffset = Number(match[1]);
     const length = Number(match[2]);
     if (startOffset + length > poolLength) {
@@ -148,6 +297,10 @@ function validateOffsets(contentXml: string, contentPool: string, errors: string
         `Offset siniri asildi: startOffset=${startOffset}, length=${length}, metin uzunlugu=${poolLength}.`,
       );
     }
+  }
+
+  if (poolLength > 0 && referenceCount === 0) {
+    warnings.push("Metin havuzu dolu ama startOffset/length referansi bulunamadi.");
   }
 }
 

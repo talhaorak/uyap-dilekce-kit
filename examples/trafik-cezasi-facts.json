@@ -1,0 +1,30 @@
+{
+  "courtCity": "Istanbul",
+  "applicant": {
+    "fullName": "Ali Veli",
+    "identityNumber": "11111111110",
+    "address": "Ornek Mah. 1. Sok. No: 2 Kadikoy/Istanbul"
+  },
+  "ticket": {
+    "ticketNumber": "MB-2026-123456",
+    "notificationDate": "2026-06-10",
+    "violationDate": "2026-06-01",
+    "issuingAuthority": "Istanbul Trafik Denetleme Sube Mudurlugu",
+    "plate": "34ABC123",
+    "article": "51/2-a",
+    "amountTRY": 1506,
+    "location": "D100 Karayolu, Kadikoy"
+  },
+  "objections": [
+    "Radar fotografi net degil.",
+    "Hiz limiti tabelasi olay yerinde gorunmuyordu."
+  ],
+  "evidence": [
+    "Arac ici kamera kaydi",
+    "Olay yeri fotografi"
+  ],
+  "attachments": [
+    "Ruhsat fotokopisi"
+  ],
+  "date": "2026-06-12"
+}

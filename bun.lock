@@ -9,9 +9,28 @@
         "typescript": "^5.9.3",
       },
     },
+    "apps/cli": {
+      "name": "@uyap-dilekce-kit/cli",
+      "version": "0.0.0",
+      "bin": {
+        "uyap-dilekce": "./src/index.ts",
+      },
+      "dependencies": {
+        "@uyap-dilekce-kit/dilekce-core": "workspace:*",
+        "@uyap-dilekce-kit/trafik-cezasi-itiraz": "workspace:*",
+        "@uyap-dilekce-kit/uyap-udf": "workspace:*",
+      },
+    },
     "packages/dilekce-core": {
       "name": "@uyap-dilekce-kit/dilekce-core",
       "version": "0.0.0",
+    },
+    "packages/trafik-cezasi-itiraz": {
+      "name": "@uyap-dilekce-kit/trafik-cezasi-itiraz",
+      "version": "0.0.0",
+      "dependencies": {
+        "@uyap-dilekce-kit/dilekce-core": "workspace:*",
+      },
     },
     "packages/uyap-udf": {
       "name": "@uyap-dilekce-kit/uyap-udf",
@@ -29,7 +48,11 @@
 
     "@types/node": ["@types/node@26.0.0", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-vf2YFi1iY9lHGwNJMs01biZFbKJkrZR1T6/MlzjhJLPdntOHLhTrDSnSVcdtvjihi4VQNlrFRIxLsDBlQpAipA=="],
 
+    "@uyap-dilekce-kit/cli": ["@uyap-dilekce-kit/cli@workspace:apps/cli"],
+
     "@uyap-dilekce-kit/dilekce-core": ["@uyap-dilekce-kit/dilekce-core@workspace:packages/dilekce-core"],
+
+    "@uyap-dilekce-kit/trafik-cezasi-itiraz": ["@uyap-dilekce-kit/trafik-cezasi-itiraz@workspace:packages/trafik-cezasi-itiraz"],
 
     "@uyap-dilekce-kit/uyap-udf": ["@uyap-dilekce-kit/uyap-udf@workspace:packages/uyap-udf"],
 
