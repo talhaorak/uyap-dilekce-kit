@@ -20,8 +20,8 @@ describe("dilekce-core", () => {
     const markdown = renderPetitionMarkdown(petition);
 
     expect(markdown).toContain("# ISTANBUL NOBETCI SULH CEZA HAKIMLIGI'NE");
-    expect(markdown).toContain("**BASVURAN:** Ali Veli - TCKN/VKN: 11111111110 - Ornek Mah. Istanbul");
-    expect(markdown).toContain("## SONUC VE ISTEM");
+    expect(markdown).toContain("**BAŞVURAN:** Ali Veli - TCKN/VKN: 11111111110 - Ornek Mah. Istanbul");
+    expect(markdown).toContain("## SONUÇ VE İSTEM");
   });
 
   test("kontrol listesi uretir", () => {

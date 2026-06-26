@@ -45,7 +45,7 @@ describe("uyap-dilekce CLI", () => {
 
     const inspection = inspectUdf(new Uint8Array(udf));
     expect(inspection.contentXml).toContain("ISTANBUL NOBETCI SULH CEZA HAKIMLIGI'NE");
-    expect(inspection.contentXml).toContain("BASVURAN: Ali Veli");
+    expect(inspection.contentXml).toContain("BAŞVURAN: Ali Veli");
     expect(inspection.contentXml).not.toContain("# ISTANBUL");
   });
 });
