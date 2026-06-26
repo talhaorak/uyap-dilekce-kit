@@ -1,0 +1,9 @@
+{
+  "name": "@uyap-dilekce-kit/dilekce-core",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Turkish petition data model and renderers.",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

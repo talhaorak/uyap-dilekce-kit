@@ -1,0 +1,15 @@
+{
+  "name": "@uyap-dilekce-kit/uyap-udf",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "UYAP UDF XML/ZIP generation and inspection utilities.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "uyap-udf": "./src/cli.ts"
+  },
+  "dependencies": {
+    "fflate": "^0.8.2"
+  }
+}

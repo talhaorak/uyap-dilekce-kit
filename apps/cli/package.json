@@ -1,0 +1,14 @@
+{
+  "name": "@uyap-dilekce-kit/cli",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "uyap-dilekce": "./src/index.ts"
+  },
+  "dependencies": {
+    "@uyap-dilekce-kit/dilekce-core": "workspace:*",
+    "@uyap-dilekce-kit/trafik-cezasi-itiraz": "workspace:*",
+    "@uyap-dilekce-kit/uyap-udf": "workspace:*"
+  }
+}
