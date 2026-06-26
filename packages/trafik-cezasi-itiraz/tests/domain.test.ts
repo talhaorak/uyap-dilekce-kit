@@ -52,6 +52,13 @@ describe("trafik cezasi itiraz domain", () => {
         narrative: "Tutanakta hatali plaka yazilmis, ceza baska araca ait.",
       }),
     ).toBe("plate_identity_error");
+    expect(
+      classifyObjectionType({
+        ...baseFacts,
+        ticket: { ...baseFacts.ticket, article: "23/3-B" },
+        narrative: "Kaza nedeniyle on plaka dustu, plaka on konsol uzerinde disaridan gorunur sekilde duruyordu.",
+      }),
+    ).toBe("plate_mounting_temporary_damage");
   });
 
   test("dilekce-core modeliyle trafik cezasi dilekcesi uretir", () => {
@@ -70,5 +77,19 @@ describe("trafik cezasi itiraz domain", () => {
     expect(checklist.some((item) => item.label.includes("tahmini son gun: 2026-06-25"))).toBe(true);
     expect(checklist.some((item) => item.label.includes("Radar/EDS fotografi"))).toBe(true);
     expect(checklist.every((item) => ["required", "recommended", "verify"].includes(item.status))).toBe(true);
+  });
+
+  test("kaza nedeniyle gecici plaka montaj sorunu icin delil onerir", () => {
+    const facts: TrafficFineFacts = {
+      ...baseFacts,
+      ticket: { ...baseFacts.ticket, article: "23/3-B" },
+      narrative: "Kaza nedeniyle on plaka dustu ve plaka on camda disaridan okunabilir sekildeydi.",
+    };
+    const petition = buildTrafficFinePetition(facts);
+    const checklist = buildTrafficFineChecklist(facts);
+
+    expect(petition.explanations.join("\n")).toContain("plakanin gizlenmedigi");
+    expect(petition.evidence).toContain("Tamir/servis randevu veya kabul belgesi");
+    expect(checklist.some((item) => item.label.includes("yeni ceza riski"))).toBe(true);
   });
 });

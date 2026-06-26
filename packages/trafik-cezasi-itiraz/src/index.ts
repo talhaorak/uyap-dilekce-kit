@@ -14,6 +14,7 @@ export type ObjectionType =
   | "red_light"
   | "phone_seatbelt"
   | "inspection_insurance"
+  | "plate_mounting_temporary_damage"
   | "plate_identity_error"
   | "notification_procedure"
   | "duplicate"
@@ -134,6 +135,26 @@ const OBJECTION_PROFILES: Record<ObjectionType, ObjectionProfile> = {
     evidence: ["Muayene kaydi", "Sigorta police/kayit belgesi", "Tescil kaydi"],
     checklist: [{ label: "Ceza tarihi itibariyla resmi muayene/sigorta kaydi alindi mi?", status: "required" }],
   },
+  plate_mounting_temporary_damage: {
+    label: "Kaza/hasar nedeniyle gecici plaka montaj sorunu",
+    explanations: [
+      "On tescil plakasinin montaj yerinde bulunmamasinin kaza veya hasar nedeniyle ortaya cikan gecici bir durum oldugu, plakanin gizlenmedigi ve aracin kimligini saklama amaci bulunmadigi ileri surulmalidir.",
+      "Plakanin arac icinde disaridan gorulebilir ve okunabilir yerde bulundugu, aracin tamir/servis surecine alinacagi ve durumun kalici kullanima donusturulmedigi fotograf ve servis kayitlariyla desteklenmelidir.",
+      "Somut olayda kusur, zorunluluk, gecicilik ve orantililik degerlendirilerek idari para cezasinin iptali veya lehe degerlendirme yapilmasi talep edilmelidir.",
+    ],
+    evidence: [
+      "Kaza tutanagi veya kaza/hasar kaydi",
+      "Arac hasar fotograflari",
+      "Plakanin on cam veya konsol uzerindeki gorunur konumunu gosteren fotograf",
+      "Tamir/servis randevu veya kabul belgesi",
+    ],
+    checklist: [
+      { label: "Plakanin gizlenmedigini ve disaridan okunabilir oldugunu gosteren fotograf eklendi mi?", status: "required" },
+      { label: "Kaza/hasar ile plakanin dusmesi arasindaki bag fotograf veya tutanakla desteklendi mi?", status: "required" },
+      { label: "Tamir/servis randevusu veya servis kabul belgesi eklendi mi?", status: "recommended" },
+      { label: "Aracin bu halde kullaniminin yeni ceza riski dogurabilecegi ayrica degerlendirildi mi?", status: "verify" },
+    ],
+  },
   plate_identity_error: {
     label: "Plaka veya kimlik hatasi",
     explanations: [
@@ -201,6 +222,22 @@ export function classifyObjectionType(facts: TrafficFineFacts): ObjectionType {
     facts.narrative,
     ...(facts.objections ?? []),
   ]);
+
+  if (
+    matchesAny(text, [
+      "23/3-b",
+      "tescil plakasi takmamak",
+      "plaka takmamak",
+      "plaka dustu",
+      "plaka dusmus",
+      "on cam",
+      "on konsol",
+      "kaza nedeniyle plaka",
+      "montaj",
+    ])
+  ) {
+    return "plate_mounting_temporary_damage";
+  }
 
   if (matchesAny(text, ["plaka", "kimlik", "arac bana ait degil", "maddi hata", "hatali"])) return "plate_identity_error";
   if (matchesAny(text, ["mukerrer", "ayni fiil", "ikinci ceza"])) return "duplicate";
