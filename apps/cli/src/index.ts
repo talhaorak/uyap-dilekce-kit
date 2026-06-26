@@ -2,7 +2,7 @@
 
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
-import { renderPetitionMarkdown, type ChecklistItem } from "@uyap-dilekce-kit/dilekce-core";
+import { renderPetitionMarkdown, renderPetitionText, type ChecklistItem } from "@uyap-dilekce-kit/dilekce-core";
 import {
   assertTrafficFineFacts,
   buildTrafficFineChecklist,
@@ -32,6 +32,7 @@ async function runTrafficFineObjection(args: string[]): Promise<void> {
   const petition = buildTrafficFinePetition(factsJson, { narrative });
   const checklist = buildTrafficFineChecklist({ ...factsJson, narrative });
   const petitionMarkdown = renderPetitionMarkdown(petition);
+  const petitionText = renderPetitionText(petition);
   const checklistMarkdown = renderChecklistMarkdown(checklist);
 
   await mkdir(outDir, { recursive: true });
@@ -42,7 +43,7 @@ async function runTrafficFineObjection(args: string[]): Promise<void> {
 
   if (shouldWriteUdf) {
     try {
-      const udf = createTextUdfBuffer(petitionMarkdown);
+      const udf = createTextUdfBuffer(petitionText);
       await Bun.write(join(outDir, "petition.udf"), udf);
       written.push(join(outDir, "petition.udf"));
     } catch (error) {

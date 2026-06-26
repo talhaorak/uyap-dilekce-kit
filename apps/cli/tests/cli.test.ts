@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { inspectUdf } from "@uyap-dilekce-kit/uyap-udf";
 
 describe("uyap-dilekce CLI", () => {
   test("trafik cezasi itiraz ciktilarini yazar", async () => {
@@ -41,5 +42,10 @@ describe("uyap-dilekce CLI", () => {
     expect(petition).toContain("Radar veya EDS kaydinin");
     expect(checklist).toContain("# Kontrol Listesi");
     expect(udf.byteLength).toBeGreaterThan(100);
+
+    const inspection = inspectUdf(new Uint8Array(udf));
+    expect(inspection.contentXml).toContain("ISTANBUL NOBETCI SULH CEZA HAKIMLIGI'NE");
+    expect(inspection.contentXml).toContain("BASVURAN: Ali Veli");
+    expect(inspection.contentXml).not.toContain("# ISTANBUL");
   });
 });
