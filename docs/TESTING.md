@@ -7,6 +7,14 @@
 - Turkce karakterlerde offset/length icin karakter sayisi kullanilir.
 - Basit metinden `content.xml` uretilir.
 - UDF arsivi unzip edilebilir ve kokte `content.xml` vardir.
+- UDF validation gecerli arsivleri kabul eder.
+- CDATA bitis sekansi guvenli bolunur.
+- Eksik kok `content.xml` ve hatali offset validation tarafindan reddedilir.
+
+`packages/dilekce-core/tests/render.test.ts` su davranislari dogrular:
+
+- Dilekce Markdown olarak render edilir.
+- Basit kontrol listesi uretilir.
 
 ## Calistirma
 

@@ -23,7 +23,7 @@ ayirmak icin yazildi.
   - `Style`
   - `PageFormat`
 - [ ] XML uretiminde attribute escaping ve CDATA edge case testlerini artir.
-- [ ] UDF validate komutu ekle:
+- [x] UDF validate komutu ekle:
   - arsiv aciliyor mu,
   - kokte `content.xml` var mi,
   - `format_id="1.8"` var mi,
@@ -36,7 +36,7 @@ ayirmak icin yazildi.
 
 ## Faz 2 - Dilekce Core
 
-- [ ] `packages/dilekce-core` paketini ac.
+- [x] `packages/dilekce-core` paketini ac.
 - [ ] Dilekce veri modelini tanimla:
   - baslik/merci,
   - taraf/kisi bilgileri,

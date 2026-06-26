@@ -63,6 +63,7 @@ bun run typecheck
 printf "Merhaba\nDunya" > /tmp/dilekce.txt
 bun run uyap-udf from-text /tmp/dilekce.txt /tmp/dilekce.udf
 bun run uyap-udf inspect /tmp/dilekce.udf
+bun run uyap-udf validate /tmp/dilekce.udf
 ```
 
 Uretilen `.udf` dosyasi UYAP Editor veya UYAP Vatandas'ta ayrica kontrol
