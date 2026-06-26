@@ -88,7 +88,7 @@ describe("trafik cezasi itiraz domain", () => {
     const petition = buildTrafficFinePetition(facts);
     const checklist = buildTrafficFineChecklist(facts);
 
-    expect(petition.explanations.join("\n")).toContain("plakanin gizlenmedigi");
+    expect(petition.explanations.join("\n")).toContain("Plaka araç içinde dışarıdan görülebilir");
     expect(petition.evidence).toContain("Tamir/servis randevu veya kabul belgesi");
     expect(checklist.some((item) => item.label.includes("yeni ceza riski"))).toBe(true);
   });

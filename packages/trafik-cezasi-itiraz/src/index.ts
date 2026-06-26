@@ -138,14 +138,14 @@ const OBJECTION_PROFILES: Record<ObjectionType, ObjectionProfile> = {
   plate_mounting_temporary_damage: {
     label: "Kaza/hasar nedeniyle gecici plaka montaj sorunu",
     explanations: [
-      "On tescil plakasinin montaj yerinde bulunmamasinin kaza veya hasar nedeniyle ortaya cikan gecici bir durum oldugu, plakanin gizlenmedigi ve aracin kimligini saklama amaci bulunmadigi ileri surulmalidir.",
-      "Plakanin arac icinde disaridan gorulebilir ve okunabilir yerde bulundugu, aracin tamir/servis surecine alinacagi ve durumun kalici kullanima donusturulmedigi fotograf ve servis kayitlariyla desteklenmelidir.",
-      "Somut olayda kusur, zorunluluk, gecicilik ve orantililik degerlendirilerek idari para cezasinin iptali veya lehe degerlendirme yapilmasi talep edilmelidir.",
+      "Ön tescil plakasının montaj yerinde bulunmaması kaza veya hasar nedeniyle ortaya çıkan geçici bir durumdur; plaka gizlenmemiş, aracın kimliğini saklama amacıyla hareket edilmemiştir.",
+      "Plaka araç içinde dışarıdan görülebilir ve okunabilir yerde bulundurulmuş, araç tamir/servis sürecine alınmak üzere geçici olarak bu halde kalmıştır.",
+      "Somut olayda kusur durumu, zorunluluk, geçicilik ve ölçülülük birlikte değerlendirilerek idari para cezasının iptaline karar verilmesi talep edilmektedir.",
     ],
     evidence: [
-      "Kaza tutanagi veya kaza/hasar kaydi",
-      "Arac hasar fotograflari",
-      "Plakanin on cam veya konsol uzerindeki gorunur konumunu gosteren fotograf",
+      "Kaza tutanağı veya kaza/hasar kaydı",
+      "Araç hasar fotoğrafları",
+      "Plakanın ön cam veya konsol üzerindeki görünür konumunu gösteren fotoğraf",
       "Tamir/servis randevu veya kabul belgesi",
     ],
     checklist: [
@@ -408,7 +408,7 @@ function renderFineSummary(ticket: TrafficFineTicket): string {
     ticket.article ? `madde ${ticket.article}` : "",
     typeof ticket.amountTRY === "number" ? `tutar ${ticket.amountTRY} TL` : "",
     ticket.location ? `yer ${ticket.location}` : "",
-    ticket.description ? `aciklama ${ticket.description}` : "",
+    ticket.description ? `aciklama ${stripTrailingPeriod(ticket.description)}` : "",
   ]
     .filter(Boolean)
     .join(", ");
@@ -465,4 +465,8 @@ function formatIsoDate(date: Date): string {
 
 function isoToday(): string {
   return formatIsoDate(new Date());
+}
+
+function stripTrailingPeriod(value: string): string {
+  return value.trim().replace(/[.。]+$/u, "");
 }
